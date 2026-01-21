@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cangaço Corporativo | Equipe 3</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rye&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        cangaco: ['Rye', 'serif'] 
+                    },
+                    colors: { 
+                        /* Cores utilitárias para o Tailwind */
+                        'sol': '#ffab00',
+                        'laranja': '#ff5722',
+                        'verde-neon': '#00e676',
+                        'verde-tech': '#2e7d32',
+                        'noite': '#05101a',
+                    },
+                    animation: { 
+                        'float': 'float 6s ease-in-out infinite',
+                        'sway': 'sway 8s ease-in-out infinite alternate',
+                        'pulse-glow': 'pulseGlow 3s infinite'
+                    },
+                    keyframes: {
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } },
+                        sway: { '0%': { transform: 'rotate(-3deg)' }, '100%': { transform: 'rotate(3deg)' } },
+                        pulseGlow: { '0%, 100%': { opacity: 1, transform: 'scale(1)' }, '50%': { opacity: 0.8, transform: 'scale(1.05)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* CSS Puro para garantir que o fundo carregue */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            background-color: #05101a; /* Cor de segurança */
+            color: #e2e8f0;
+            transition: background-color 1.0s, color 1.0s;
+        }
+
+        /* --- MODO ESCURO (ATIVO) --- */
+        .bg-sertao-night { 
+            position: fixed; inset: 0; z-index: -2; 
+            /* Degradê manual para não falhar */
+            background: linear-gradient(to bottom, #020617 0%, #0f281e 60%, #3e2723 100%);
+        }
+        
+        .stars {
+            position: absolute; inset: 0;
+            background-image: radial-gradient(white 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        /* Cacto Silhueta Animado */
+        .cactus-bg {
+            position: absolute; bottom: -20px; left: 0; width: 100%; height: auto;
+            fill: #221512; opacity: 0.6;
+            transform-origin: bottom center;
+            animation: sway 10s ease-in-out infinite alternate;
+        }
+
+        /* Vagalumes */
+        .firefly {
+            position: absolute; width: 4px; height: 4px; background: #00e676;
+            border-radius: 50%; box-shadow: 0 0 10px #00e676;
+            animation: float 10s infinite; opacity: 0;
+        }
+        .firefly:nth-child(1) { top: 30%; left: 20%; animation-delay: 0s; opacity: 0.8; }
+        .firefly:nth-child(2) { top: 70%; left: 80%; animation-delay: 2.5s; opacity: 0.6; }
+        .firefly:nth-child(3) { top: 50%; left: 50%; animation-delay: 5s; opacity: 0.7; }
+
+        /* --- MODO CLARO --- */
+        #light-bg {
+            background-color: #fff8e1; /* Areia clara */
+            position: fixed; inset: 0; z-index: -2; 
+            opacity: 1; transition: opacity 1.0s;
+        }
+        /* Efeito de sol no modo claro */
+        .sun-effect {
+            position: absolute; top: -100px; right: -100px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,171,0,0.4) 0%, transparent 70%);
+            filter: blur(60px);
+        }
+
+        /* --- CARDS --- */
+        .glass-card {
+            background: rgba(15, 25, 35, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        html.dark .glass-card:hover {
+            border-color: #ffab00; /* Borda amarela no hover */
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: rgba(15, 25, 35, 0.8);
+        }
+
+        /* Ajustes para modo claro */
+        html:not(.dark) body { color: #1a202c; }
+        html:not(.dark) .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #d4d4d4;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        html:not(.dark) .glass-card:hover {
+            border-color: #ff5722;
+            transform: translateY(-5px);
+        }
+
+        /* --- TIPOGRAFIA E CORES --- */
+        .text-cangaco { font-family: 'Rye', serif; }
+        .text-neon { color: #00e676; text-shadow: 0 0 10px rgba(0,230,118,0.3); }
+        html:not(.dark) .text-neon { color: #2e7d32; text-shadow: none; }
+        
+        .text-sol { color: #ffab00; }
+        html:not(.dark) .text-sol { color: #ff6f00; }
+
+        /* HEADER */
+        header { background: rgba(5, 16, 26, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        html:not(.dark) header { background: rgba(255, 255, 255, 0.9); border-bottom: 2px solid #ffab00; }
+
+        /* FOTOS */
+        .foto-bando { filter: grayscale(30%); transition: all 0.4s; }
+        .glass-card:hover .foto-bando { filter: grayscale(0%); transform: scale(1.1); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="dark-bg" class="bg-sertao-night">
+        <div class="stars"></div>
+        <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
+        
+        <svg class="cactus-bg" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100,250 C120,200 140,200 160,250 L160,320 L100,320 Z M400,150 C420,100 460,100 480,150 L480,320 L400,320 Z M900,200 C920,150 960,150 980,200 L980,320 L900,320 Z M1300,230 C1320,180 1340,180 1360,230 L1360,320 L1300,320 Z"></path>
+        </svg>
+    </div>
+
+    <div id="light-bg" class="hidden">
+        <div class="sun-effect"></div>
+        <svg style="position: absolute; bottom: 0; width: 100%; height: 100px; fill: #5d4037; opacity: 0.1;" viewBox="0 0 1440 320">
+            <path d="M0,320L1440,320L1440,280L0,280Z"></path>
+        </svg>
+    </div>
+
+    <header class="h-20 flex items-center justify-between px-6 lg:px-12 fixed top-0 w-full z-50 transition-all">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-sol shadow-lg group bg-black">
+                <img src="LOGO - CANGAÇO CORPORATIVO.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+            </div>
+            <div>
+                <h1 class="text-cangaco text-lg md:text-xl leading-none text-gray-100 dark:text-white">
+                    CANGAÇO <span class="text-sol">CORP.</span>
+                </h1>
+                <p class="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase">Equipe 3 | Rende+</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-sol hover:text-black transition-all">
+                <i id="theme-icon" class="fas fa-moon text-gray-200"></i>
+            </button>
+            <a href="#" onclick="window.print()" class="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-verde-tech text-white hover:bg-white hover:text-green-800 transition-all shadow-lg">
+                <i class="fas fa-print"></i> SALVAR
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl w-full mx-auto p-6 lg:p-8 pb-32 relative z-10" style="padding-top: 130px;">
+
+        <section class="text-center mb-16 animate-float">
+            <div class="inline-block relative mb-6">
+                <div class="p-1 rounded-full bg-gradient-to-tr from-verde-tech to-sol">
+                    <img src="LOGO - CANGAÇO CORPORATIVO.jpg" class="w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-gray-900 object-cover shadow-2xl">
+                </div>
+                <div class="absolute -bottom-2 -right-2 bg-sol text-black w-12 h-12 flex items-center justify-center rounded-full shadow-lg font-bold">
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+
+            <h2 class="text-4xl md:text-5xl text-cangaco mb-4 leading-tight text-white dark:text-gray-100">
+                Inovação com a<br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-sol via-laranja to-verde-neon">Força do Sertão</span>
+            </h2>
+            <p class="max-w-xl mx-auto text-gray-400 font-medium">
+                Transformando desafios áridos em resultados férteis.
+            </p>
+        </section>
+
+        <div class="sticky top-24 z-40 flex justify-center mb-16">
+            <nav class="bg-gray-900/80 dark:bg-black/60 backdrop-blur-md rounded-full px-2 py-1 border border-white/10 shadow-xl">
+                <a href="#grito" class="inline-block px-5 py-2 rounded-full text-sm font-bold text-gray-300 hover:bg-sol hover:text-black transition-all font-cangaco">Lema</a>
+                <a href="#projetos" class="inline-block px-5 py-2 rounded-full text-sm font-bold text-gray-300 hover:bg-sol hover:text-black transition-all font-cangaco">Projetos</a>
+                <a href="#bando" class="inline-block px-5 py-2 rounded-full text-sm font-bold text-gray-300 hover:bg-sol hover:text-black transition-all font-cangaco">Bando</a>
+            </nav>
+        </div>
+
+        <div id="grito" class="scroll-mt-32 mb-20">
+            <div class="glass-card p-10 text-center border-l-4 border-sol relative overflow-hidden group">
+                <i class="fas fa-bullhorn absolute -right-6 -bottom-6 text-8xl opacity-5 text-white transform group-hover:rotate-12 transition-transform"></i>
+                <h3 class="text-xl font-cangaco text-sol mb-6 uppercase tracking-widest">Nosso Lema</h3>
+                <p class="text-2xl md:text-3xl font-bold italic font-serif leading-relaxed text-gray-200 dark:text-gray-100">
+                    "Processo ajustado, bolso recheado,<br>
+                    O Cangaço chegou, tá tudo dominado!<br>
+                    No Rende+ a gente faz por merecer,<br>
+                    Cangaço Corporativo veio pra vencer!"
+                </p>
+            </div>
+        </div>
+
+        <div id="projetos" class="scroll-mt-32 mb-24">
+            <h3 class="text-2xl font-cangaco text-center mb-10 text-sol uppercase tracking-widest">
+                <i class="fas fa-crosshairs mr-2"></i> Missões Táticas
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 border-t-4 border-red-500 hover:shadow-red-500/20">
+                    <div class="w-12 h-12 rounded bg-red-500/10 flex items-center justify-center text-red-500 text-xl mb-4">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h4 class="font-cangaco text-lg text-gray-100 mb-2">SOS Infra</h4>
+                    <p class="text-sm text-gray-400 mb-4">Manutenção ágil com SLA definido por prioridade.</p>
+                    <div class="mt-auto pt-3 border-t border-white/5 flex justify-between text-xs font-bold text-gray-300">
+                        <span class="text-red-400">Urgência</span>
+                        <span>24h Max</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 border-t-4 border-sol hover:shadow-yellow-500/20">
+                    <div class="w-12 h-12 rounded bg-yellow-500/10 flex items-center justify-center text-sol text-xl mb-4">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4 class="font-cangaco text-lg text-gray-100 mb-2">Fornecedores</h4>
+                    <p class="text-sm text-gray-400 mb-4">Gestão blindada de compras e cadastro seguro.</p>
+                    <div class="mt-auto pt-3 border-t border-white/5 flex justify-between text-xs font-bold text-gray-300">
+                        <span class="text-sol">Segurança</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 border-t-4 border-verde-neon hover:shadow-green-500/20">
+                    <div class="w-12 h-12 rounded bg-green-500/10 flex items-center justify-center text-verde-neon text-xl mb-4">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h4 class="font-cangaco text-lg text-gray-100 mb-2">Pausas Ativas</h4>
+                    <p class="text-sm text-gray-400 mb-4">Saúde e recarga de energia com alongamentos.</p>
+                    <div class="mt-auto pt-3 border-t border-white/5 flex justify-around text-xs font-bold text-gray-300">
+                        <span class="flex items-center gap-1"><i class="fas fa-clock text-verde-neon"></i> 10h</span>
+                        <span class="flex items-center gap-1"><i class="fas fa-clock text-verde-neon"></i> 15h</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bando" class="scroll-mt-32">
+            <h3 class="text-2xl font-cangaco text-center mb-10 text-sol uppercase tracking-widest">
+                <i class="fas fa-users mr-2"></i> O Bando
+            </h3>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                
+                <div class="glass-card p-6 text-center col-span-2 md:col-span-1 md:row-span-2 flex flex-col justify-center border-2 border-dashed border-sol bg-gradient-to-b from-transparent to-sol/5">
+                    <div class="relative w-28 h-28 mx-auto mb-4">
+                        <img src="Hércules Santos.jpg.jpg" class="w-full h-full object-cover rounded-full border-4 border-sol shadow-xl foto-bando">
+                        <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-sol text-black text-[10px] font-bold px-3 py-1 rounded-full uppercase">Capitão</span>
+                    </div>
+                    <h4 class="font-bold text-lg font-cangaco text-gray-100">Hércules Santos</h4>
+                    <p class="text-xs text-gray-400 mt-1">Líder Estratégico</p>
+                </div>
+
+                <div class="glass-card p-4 text-center group">
+                    <img src="Aline Casé.jpeg" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-gray-600 group-hover:border-verde-neon mb-3 foto-bando">
+                    <h5 class="font-bold text-sm text-gray-200">Aline Casé</h5>
+                    <p class="text-[10px] text-gray-500 uppercase">Cangaceira</p>
+                </div>
+
+                <div class="glass-card p-4 text-center group">
+                    <img src="Andreza Reis.jpg.jpeg" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-gray-600 group-hover:border-verde-neon mb-3 foto-bando">
+                    <h5 class="font-bold text-sm text-gray-200">Andreza Reis</h5>
+                     <p class="text-[10px] text-gray-500 uppercase">Cangaceira</p>
+                </div>
+
+                <div class="glass-card p-4 text-center group">
+                    <img src="Anna Beatriz Pereira.jpg.jpg" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-gray-600 group-hover:border-verde-neon mb-3 foto-bando">
+                    <h5 class="font-bold text-sm text-gray-200">Anna Beatriz</h5>
+                     <p class="text-[10px] text-gray-500 uppercase">Cangaceira</p>
+                </div>
+
+                <div class="glass-card p-4 text-center group">
+                    <img src="Gislande Muniz.jpeg" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-gray-600 group-hover:border-verde-neon mb-3 foto-bando">
+                    <h5 class="font-bold text-sm text-gray-200">Gislande Muniz</h5>
+                     <p class="text-[10px] text-gray-500 uppercase">Cangaceira</p>
+                </div>
+
+                <div class="glass-card p-4 text-center group">
+                    <img src="kelvin Mira.jpg.jpeg" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-gray-600 group-hover:border-verde-neon mb-3 foto-bando">
+                    <h5 class="font-bold text-sm text-gray-200">Kelvin Mira</h5>
+                     <p class="text-[10px] text-gray-500 uppercase">Cangaceiro</p>
+                </div>
+
+                <div class="glass-card p-4 text-center group">
+                    <img src="Thais Matos.jpg.jpeg" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-gray-600 group-hover:border-verde-neon mb-3 foto-bando">
+                    <h5 class="font-bold text-sm text-gray-200">Thais Matos</h5>
+                     <p class="text-[10px] text-gray-500 uppercase">Cangaceira</p>
+                </div>
+
+                <div class="glass-card p-4 text-center group">
+                    <img src="Vinicíus Oliveira.jpeg" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-gray-600 group-hover:border-verde-neon mb-3 foto-bando">
+                    <h5 class="font-bold text-sm text-gray-200">Vinicíus O.</h5>
+                     <p class="text-[10px] text-gray-500 uppercase">Cangaceiro</p>
+                </div>
+
+                 <div class="glass-card p-4 text-center group">
+                    <img src="Yanne Silva.jpg.jpeg" class="w-20 h-20 mx-auto rounded-full object-cover border-2 border-gray-600 group-hover:border-verde-neon mb-3 foto-bando">
+                    <h5 class="font-bold text-sm text-gray-200">Yanne Silva</h5>
+                     <p class="text-[10px] text-gray-500 uppercase">Cangaceira</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-8 text-[10px] font-bold text-gray-500 opacity-60 relative z-10 border-t border-white/5 mt-12">
+        &copy; 2026 Cangaço Corporativo | Mandacaru Tech
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            const icon = document.getElementById('theme-icon');
+            const darkBg = document.getElementById('dark-bg');
+            const lightBg = document.getElementById('light-bg');
+            
+            if (!isDark) {
+                icon.className = 'fas fa-sun text-yellow-600';
+                darkBg.classList.add('hidden');
+                lightBg.classList.remove('hidden');
+            } else {
+                icon.className = 'fas fa-moon text-gray-200';
+                darkBg.classList.remove('hidden');
+                lightBg.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

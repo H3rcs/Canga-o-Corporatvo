@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cangaço Corporativo | Rende+</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rye&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        cangaco: ['Rye', 'serif'] 
+                    },
+                    colors: {
+                        'couro': '#3e2723',     
+                        'couro-claro': '#d7ccc8',
+                        'areia': '#fff8e1',    
+                        'sertao-laranja': '#ff6d00',
+                        'sertao-ouro': '#ffab00',
+                        'verde-seco': '#33691e', // Verde mais sóbrio
+                        'noite': '#0a0908', // Quase preto, levemente marrom
+                    },
+                    backgroundImage: {
+                        'texture-light': "url(\"data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239c92ac' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E\")",
+                        'texture-dark': "url(\"data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E\")"
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* --- VISUAL DE "PAPEL/COURO" --- */
+        .page-bg {
+            position: fixed; inset: 0; z-index: -5;
+            transition: background 0.5s ease;
+        }
+        
+        .dark .page-bg {
+            background-color: #0a0908;
+            background-image: radial-gradient(circle at 50% 0%, #3e2723 0%, #0a0908 80%);
+        }
+        .dark .page-bg::after {
+            content: ""; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d7ccc8' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        html:not(.dark) .page-bg {
+            background-color: #fff8e1; /* Areia */
+            background-image: radial-gradient(circle at 50% 0%, #ffe0b2 0%, #fff8e1 70%);
+        }
+        html:not(.dark) .page-bg::after {
+            content: ""; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233e2723' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* --- TIPOGRAFIA --- */
+        .title-font { font-family: 'Rye', serif; letter-spacing: 0.05em; }
+        
+        /* --- ESTILO DOS DOSSIÊS (PROJETOS) --- */
+        .project-card {
+            border-left: 6px solid;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: #ffab00; /* Ouro */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+        html:not(.dark) .project-card {
+            background: #ffffff;
+            border-color: #ff6d00; /* Laranja */
+            box-shadow: 0 4px 6px -1px rgba(62, 39, 35, 0.1);
+            border: 1px solid #e0e0e0;
+            border-left: 6px solid #ff6d00;
+        }
+
+        /* --- FOTOS (GRID SIMÉTRICO) --- */
+        .member-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+            text-align: center;
+            height: 100%; /* Garante altura igual */
+        }
+        
+        .dark .member-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .member-card:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-5px); }
+
+        html:not(.dark) .member-card {
+            background: #fff;
+            border: 1px solid #d7ccc8;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        html:not(.dark) .member-card:hover { transform: translateY(-5px); border-color: #ff6d00; }
+
+        .member-img {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid;
+            margin-bottom: 1rem;
+        }
+        .dark .member-img { border-color: #ffab00; }
+        html:not(.dark) .member-img { border-color: #ff6d00; }
+
+        /* HEADER */
+        header { backdrop-filter: blur(10px); z-index: 50; }
+        .dark header { background: rgba(10, 9, 8, 0.9); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        html:not(.dark) header { background: rgba(255, 248, 225, 0.95); border-bottom: 2px solid #3e2723; }
+
+    </style>
+</head>
+<body class="antialiased text-couro dark:text-gray-200">
+
+    <div class="page-bg"></div>
+
+    <header class="fixed top-0 w-full h-20 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full border-2 border-sertao-ouro overflow-hidden bg-black shadow-lg">
+                    <img src="logo.jpg" class="w-full h-full object-cover" onerror="this.src='logo.png'">
+                </div>
+                <div>
+                    <h1 class="title-font text-xl leading-none uppercase">Cangaço <span class="text-sertao-ouro dark:text-sertao-ouro text-sertao-laranja">Corp.</span></h1>
+                    <p class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-70">Equipe 3 | Rende+</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center transition-all bg-black/10 dark:bg-white/10 hover:bg-sertao-ouro"><i id="theme-icon" class="fas fa-moon"></i></button>
+                <a href="#" onclick="window.print()" class="hidden md:flex px-4 py-2 rounded-full text-xs font-bold items-center gap-2 shadow bg-couro text-white hover:bg-sertao-laranja transition-colors"><i class="fas fa-print"></i> PDF</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl w-full mx-auto p-6 pt-32 pb-20 relative z-10">
+
+        <section class="text-center mb-20">
+            <div class="inline-block relative mb-6">
+                <div class="p-1 rounded-full border-2 border-dashed border-sertao-ouro">
+                    <img src="logo.jpg" class="w-40 h-40 rounded-full border-4 border-couro dark:border-black object-cover shadow-2xl" onerror="this.src='logo.png'">
+                </div>
+            </div>
+            <h2 class="text-4xl md:text-5xl title-font mb-6 leading-tight">
+                Identidade & <span class="text-sertao-laranja dark:text-sertao-ouro">Performance</span>
+            </h2>
+            
+            <div class="max-w-3xl mx-auto bg-couro text-areia p-6 rounded-lg shadow-xl relative mt-8 transform -rotate-1 hover:rotate-0 transition-transform">
+                <i class="fas fa-quote-left absolute top-4 left-4 text-sertao-ouro opacity-30 text-4xl"></i>
+                <p class="text-xl md:text-2xl font-bold italic font-serif leading-relaxed">
+                    "Processo ajustado, bolso recheado,<br>
+                    O Cangaço chegou, tá tudo dominado!<br>
+                    No Rende+ a gente faz por merecer,<br>
+                    Cangaço Corporativo veio pra vencer!"
+                </p>
+                <i class="fas fa-quote-right absolute bottom-4 right-4 text-sertao-ouro opacity-30 text-4xl"></i>
+            </div>
+        </section>
+
+        <div class="w-full h-1 bg-gradient-to-r from-transparent via-couro dark:via-sertao-ouro to-transparent opacity-20 mb-16"></div>
+
+        <section id="projetos" class="mb-24">
+            <h3 class="text-3xl title-font text-center mb-12 uppercase flex items-center justify-center gap-3">
+                <i class="fas fa-scroll text-sertao-laranja dark:text-sertao-ouro"></i> Dossiê de Projetos
+            </h3>
+
+            <div class="project-card border-l-red-600 dark:border-l-red-500">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold title-font text-red-700 dark:text-red-400">1. SOS Infraestrutura</h4>
+                        <p class="text-sm font-bold opacity-70 uppercase tracking-wider">Manutenção & Agilidade</p>
+                    </div>
+                </div>
+                
+                <p class="mb-6 leading-relaxed">
+                    <strong>Objetivo:</strong> Padronizar a identificação e execução de reparos, garantindo agilidade e priorização clara.
+                </p>
+
+                <div class="bg-black/5 dark:bg-white/5 p-5 rounded-lg mb-6">
+                    <h5 class="font-bold mb-3 flex items-center gap-2"><i class="fas fa-cogs"></i> Como funciona:</h5>
+                    <ul class="space-y-3">
+                        <li class="flex gap-3">
+                            <i class="fas fa-arrow-right mt-1 text-red-500"></i>
+                            <span><strong>Fluxo de Reporte:</strong> O colaborador avisa o Supervisor, que encaminha a demanda à Recepção para registro no sistema.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <i class="fas fa-arrow-right mt-1 text-red-500"></i>
+                            <span><strong>Triagem (SST) e Prazos (Financeiro):</strong> A urgência é definida tecnicamente para análise de viabilidade: <span class="text-red-600 font-bold">Alta (24h)</span>, <span class="text-orange-500 font-bold">Média (72h)</span> ou <span class="text-green-600 font-bold">Baixa (120h)</span>.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <i class="fas fa-arrow-right mt-1 text-red-500"></i>
+                            <span><strong>Feedback:</strong> Após a execução, a Recepção comunica oficialmente o desfecho ao solicitante.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex items-center gap-2 text-sm font-bold bg-red-50 dark:bg-red-900/20 p-3 rounded inline-block">
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <span>Diferencial: Transparência no status do pedido e prazos definidos por urgência.</span>
+                </div>
+            </div>
+
+            <div class="project-card border-l-amber-500 dark:border-l-amber-400">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 text-amber-600 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold title-font text-amber-700 dark:text-amber-400">2. Cadastro de Fornecedores</h4>
+                        <p class="text-sm font-bold opacity-70 uppercase tracking-wider">Setor de Compras</p>
+                    </div>
+                </div>
+
+                <p class="mb-6 leading-relaxed">
+                    <strong>Objetivo:</strong> Organizar, padronizar e facilitar a gestão de parceiros comerciais, garantindo mais eficiência e segurança nas aquisições.
+                </p>
+
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-black/5 dark:bg-white/5 p-4 rounded-lg">
+                        <span class="text-4xl font-bold text-amber-500/20 block mb-1">01</span>
+                        <h5 class="font-bold mb-2">Identificação</h5>
+                        <p class="text-sm text-sm">Pesquisas de mercado, indicações, cotações e demandas internas.</p>
+                    </div>
+                    <div class="bg-black/5 dark:bg-white/5 p-4 rounded-lg">
+                        <span class="text-4xl font-bold text-amber-500/20 block mb-1">02</span>
+                        <h5 class="font-bold mb-2">Coleta de Dados</h5>
+                        <p class="text-sm text-sm">Coleta rigorosa das principais informações necessárias.</p>
+                    </div>
+                    <div class="bg-black/5 dark:bg-white/5 p-4 rounded-lg">
+                        <span class="text-4xl font-bold text-amber-500/20 block mb-1">03</span>
+                        <h5 class="font-bold mb-2">Cadastro</h5>
+                        <p class="text-sm text-sm">Registro em planilha/sistema padronizado e organizado.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card border-l-green-600 dark:border-l-green-500">
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fas fa-child-reaching"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold title-font text-green-700 dark:text-green-400">3. Pausas Ergonômicas</h4>
+                        <p class="text-sm font-bold opacity-70 uppercase tracking-wider">Saúde e Bem-estar</p>
+                    </div>
+                </div>
+
+                <p class="mb-6 leading-relaxed">
+                    <strong>Objetivo:</strong> Promover saúde, bem-estar e prevenir dores musculares no ambiente de trabalho.
+                </p>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex-1 bg-black/5 dark:bg-white/5 p-5 rounded-lg">
+                        <h5 class="font-bold mb-3"><i class="fas fa-bell"></i> Como funciona:</h5>
+                        <ul class="space-y-2 text-sm">
+                            <li>• Uma sirene irá tocar nos horários programados.</li>
+                            <li>• Todos os colaboradores devem interromper a atividade.</li>
+                            <li>• Realização de alongamentos e exercícios de mobilidade.</li>
+                            <li>• <strong>Duração:</strong> 5 a 10 minutos.</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col justify-center gap-4 min-w-[200px]">
+                        <div class="flex items-center gap-3 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                            <i class="fas fa-sun text-yellow-500 text-xl"></i>
+                            <div>
+                                <strong class="block text-lg">10h</strong>
+                                <span class="text-xs uppercase">Pausa da Manhã</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                            <i class="fas fa-coffee text-orange-500 text-xl"></i>
+                            <div>
+                                <strong class="block text-lg">15h</strong>
+                                <span class="text-xs uppercase">Pausa da Tarde</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="bando">
+            <h3 class="text-3xl title-font text-center mb-12 uppercase flex items-center justify-center gap-3">
+                <i class="fas fa-hat-cowboy text-sertao-laranja dark:text-sertao-ouro"></i> O Bando (Equipe)
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                
+                <div class="member-card border-2 border-sertao-ouro bg-sertao-ouro/10">
+                    <img src="hercules.jpg" class="member-img w-32 h-32" onerror="this.src='hercules.jpeg'">
+                    <h4 class="text-xl font-bold title-font">Hércules Santos</h4>
+                    <span class="bg-couro dark:bg-sertao-ouro dark:text-black text-white text-xs font-bold px-3 py-1 rounded-full uppercase mt-2">Capitão (Líder)</span>
+                </div>
+
+                <div class="member-card">
+                    <img src="aline.jpeg" class="member-img" onerror="this.src='aline.jpg'">
+                    <h4 class="font-bold">Aline Casé</h4>
+                    <p class="text-xs uppercase opacity-70 mt-1">Cangaceira</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="andreza.jpeg" class="member-img" onerror="this.src='andreza.jpg'">
+                    <h4 class="font-bold">Andreza Reis</h4>
+                    <p class="text-xs uppercase opacity-70 mt-1">Cangaceira</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="anna.jpg" class="member-img" onerror="this.src='anna.jpeg'">
+                    <h4 class="font-bold">Anna Beatriz</h4>
+                    <p class="text-xs uppercase opacity-70 mt-1">Cangaceira</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="gislande.jpeg" class="member-img" onerror="this.src='gislande.jpg'">
+                    <h4 class="font-bold">Gislande Muniz</h4>
+                    <p class="text-xs uppercase opacity-70 mt-1">Cangaceira</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="kelvin.jpeg" class="member-img" onerror="this.src='kelvin.jpg'">
+                    <h4 class="font-bold">Kelvin Mira</h4>
+                    <p class="text-xs uppercase opacity-70 mt-1">Cangaceiro</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="thais.jpeg" class="member-img" onerror="this.src='thais.jpg'">
+                    <h4 class="font-bold">Thais Matos</h4>
+                    <p class="text-xs uppercase opacity-70 mt-1">Cangaceira</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="vinicius.jpeg" class="member-img" onerror="this.src='vinicius.jpg'">
+                    <h4 class="font-bold">Vinicíus O.</h4>
+                    <p class="text-xs uppercase opacity-70 mt-1">Cangaceiro</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="yanne.jpeg" class="member-img" onerror="this.src='yanne.jpg'">
+                    <h4 class="font-bold">Yanne Silva</h4>
+                    <p class="text-xs uppercase opacity-70 mt-1">Cangaceira</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 text-xs font-bold opacity-60 relative z-10 border-t border-current/10">
+        &copy; 2026 Cangaço Corporativo | Mandacaru Tech
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            const isDark = html.classList.toggle('dark');
+            
+            if (isDark) {
+                icon.className = 'fas fa-moon';
+            } else {
+                icon.className = 'fas fa-sun text-sertao-orange';
+            }
+        }
+    </script>
+</body>
+</html>
