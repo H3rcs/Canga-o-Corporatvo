@@ -44,15 +44,25 @@
     <style>
         body { font-family: 'Inter', sans-serif; overflow-x: hidden; transition: color 0.5s ease; }
 
+        /* SCROLLBAR CUSTOMIZADA (Esconde a barra no mobile para estética) */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         /* BACKGROUND */
         .bg-layer { position: fixed; inset: 0; z-index: -10; width: 100vw; height: 100vh; transition: background 1s ease; }
         .scenario-sunset { background: linear-gradient(to bottom, #0f0a0e 0%, #311b92 40%, #d84315 100%); }
         .scenario-day { background: linear-gradient(to bottom, #29b6f6 0%, #fff9c4 60%, #ffcc80 100%); }
 
-        /* SOL / LUA */
+        /* SOL / LUA - Ajustado posição Mobile */
         .celestial-body { position: absolute; border-radius: 50%; transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-        .dark .celestial-body { top: 15%; right: 10%; width: 120px; height: 120px; background: #ff6d00; box-shadow: 0 0 60px #ff6d00; opacity: 0.9; }
-        html:not(.dark) .celestial-body { top: 10%; right: 10%; width: 150px; height: 150px; background: #ffd600; box-shadow: 0 0 100px rgba(255, 214, 0, 0.8); }
+        .dark .celestial-body { top: 10%; right: -5%; width: 80px; height: 80px; background: #ff6d00; box-shadow: 0 0 40px #ff6d00; opacity: 0.9; }
+        html:not(.dark) .celestial-body { top: 5%; right: -5%; width: 100px; height: 100px; background: #ffd600; box-shadow: 0 0 60px rgba(255, 214, 0, 0.8); }
+
+        /* Media Query para telas maiores (ajusta Sol/Lua) */
+        @media (min-width: 768px) {
+            .dark .celestial-body { top: 15%; right: 10%; width: 120px; height: 120px; box-shadow: 0 0 60px #ff6d00; }
+            html:not(.dark) .celestial-body { top: 10%; right: 10%; width: 150px; height: 150px; box-shadow: 0 0 100px rgba(255, 214, 0, 0.8); }
+        }
 
         /* ESTRELAS */
         .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 3s infinite ease-in-out alternate; }
@@ -62,14 +72,18 @@
         .dark .glass { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: #f3f4f6; }
         html:not(.dark) .glass { background: rgba(255, 255, 255, 0.85); border: 1px solid #d7ccc8; color: #3e2723; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
-        /* FOTOS (Correção de Corte e Tamanho) */
+        /* FOTOS - Responsivas */
         .member-img {
-            width: 160px; height: 160px; /* Aumentado */
+            width: 130px; height: 130px; /* Menor no mobile */
             object-fit: cover; 
-            object-position: top; /* <--- IMPORTANTE: Centraliza no rosto/testa */
+            object-position: top; 
             border-radius: 50%;
             border: 4px solid; transition: all 0.3s ease; filter: grayscale(20%);
         }
+        @media (min-width: 768px) {
+            .member-img { width: 160px; height: 160px; }
+        }
+
         .dark .member-img { border-color: #ffab00; }
         html:not(.dark) .member-img { border-color: #ff6d00; }
         .group:hover .member-img { filter: grayscale(0%); transform: scale(1.05); }
@@ -89,125 +103,128 @@
         </div>
     </div>
 
-    <header class="fixed top-0 w-full h-20 z-50 glass !rounded-none !border-x-0 !border-t-0">
-        <div class="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full border-2 border-ouro overflow-hidden bg-black shadow-lg">
+    <header class="fixed top-0 w-full h-16 md:h-20 z-50 glass !rounded-none !border-x-0 !border-t-0">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3 md:gap-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-ouro overflow-hidden bg-black shadow-lg shrink-0">
                     <img src="logo.jpg" class="w-full h-full object-cover" 
                          onerror="this.src='logo.jpeg'; this.onerror=function(){this.src='logo.png'}">
                 </div>
                 <div>
-                    <h1 class="font-cangaco text-xl leading-none uppercase text-couro dark:text-white">Cangaço <span class="text-laranja dark:text-ouro">Corporativo</span></h1>
-                    <p class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-70 text-couro dark:text-gray-300">Equipe 3 | Rende+</p>
+                    <h1 class="font-cangaco text-lg md:text-xl leading-none uppercase text-couro dark:text-white">Cangaço <span class="text-laranja dark:text-ouro">Corp.</span></h1>
+                    <p class="text-[8px] md:text-[10px] font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase opacity-70 text-couro dark:text-gray-300">Equipe 3 | Rende+</p>
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center transition-all bg-black/10 dark:bg-white/10 hover:bg-ouro hover:text-black">
-                    <i id="theme-icon" class="fas fa-moon dark:text-white"></i>
+                <button onclick="toggleTheme()" class="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all bg-black/10 dark:bg-white/10 hover:bg-ouro hover:text-black">
+                    <i id="theme-icon" class="fas fa-moon dark:text-white text-sm md:text-base"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-5xl w-full mx-auto p-6 pt-32 pb-20 relative z-10">
+    <main class="max-w-5xl w-full mx-auto p-4 md:p-6 pt-24 md:pt-32 pb-20 relative z-10">
 
         <section class="text-center mb-10">
-            <div class="inline-block relative mb-6 animate-float">
-                <div class="p-3 rounded-full border-4 border-dashed border-ouro">
-                    <img src="logo.jpg" class="w-80 h-80 rounded-full border-4 border-couro dark:border-black object-cover shadow-2xl"
+            <div class="inline-block relative mb-4 md:mb-6 animate-float">
+                <div class="p-2 md:p-3 rounded-full border-4 border-dashed border-ouro">
+                    <img src="logo.jpg" class="w-48 h-48 md:w-80 md:h-80 rounded-full border-4 border-couro dark:border-black object-cover shadow-2xl"
                          onerror="this.src='logo.jpeg'; this.onerror=function(){this.src='logo.png'}">
                 </div>
             </div>
             
-            <h2 class="text-4xl md:text-6xl font-cangaco mb-6 leading-tight text-couro dark:text-white drop-shadow-lg">
-                Cangaço <span class="text-laranja dark:text-ouro">Corporativo</span>
+            <h2 class="text-3xl md:text-6xl font-cangaco mb-4 md:mb-6 leading-tight text-couro dark:text-white drop-shadow-lg px-2">
+                Cangaço <span class="text-laranja dark:text-ouro block md:inline">Corporativo</span>
             </h2>
         </section>
 
-        <div class="sticky top-24 z-40 flex justify-center mb-20">
-            <nav class="glass rounded-full px-4 py-2 shadow-2xl border-2 border-ouro/30">
-                <a href="#grito" class="inline-block px-6 py-2 rounded-full font-bold transition-all hover:bg-ouro hover:text-black font-cangaco uppercase tracking-wider">Grito</a>
-                <a href="#projetos" class="inline-block px-6 py-2 rounded-full font-bold transition-all hover:bg-ouro hover:text-black font-cangaco uppercase tracking-wider">Projetos</a>
-                <a href="#bando" class="inline-block px-6 py-2 rounded-full font-bold transition-all hover:bg-ouro hover:text-black font-cangaco uppercase tracking-wider">Bando</a>
+        <div class="sticky top-20 md:top-24 z-40 flex justify-center mb-12 md:mb-20 w-full">
+            <nav class="glass rounded-full px-2 md:px-4 py-2 shadow-2xl border-2 border-ouro/30 max-w-full overflow-x-auto hide-scrollbar whitespace-nowrap">
+                <a href="#grito" class="inline-block px-4 md:px-6 py-2 rounded-full font-bold transition-all hover:bg-ouro hover:text-black font-cangaco uppercase tracking-wider text-sm md:text-base">Grito</a>
+                <a href="#projetos" class="inline-block px-4 md:px-6 py-2 rounded-full font-bold transition-all hover:bg-ouro hover:text-black font-cangaco uppercase tracking-wider text-sm md:text-base">Projetos</a>
+                <a href="#bando" class="inline-block px-4 md:px-6 py-2 rounded-full font-bold transition-all hover:bg-ouro hover:text-black font-cangaco uppercase tracking-wider text-sm md:text-base">Bando</a>
             </nav>
         </div>
 
-        <section id="grito" class="mb-24 scroll-mt-32">
-            <div class="max-w-4xl mx-auto glass p-10 border-l-8 border-ouro text-center transform transition hover:scale-105">
-                <i class="fas fa-quote-left block text-left text-ouro opacity-50 text-3xl mb-4"></i>
-                <p class="text-2xl md:text-3xl font-bold italic font-serif leading-relaxed">
+        <section id="grito" class="mb-16 md:mb-24 scroll-mt-32">
+            <div class="max-w-4xl mx-auto glass p-6 md:p-10 border-l-8 border-ouro text-center transform transition hover:scale-105">
+                <i class="fas fa-quote-left block text-left text-ouro opacity-50 text-2xl md:text-3xl mb-4"></i>
+                <p class="text-xl md:text-3xl font-bold italic font-serif leading-relaxed">
                     "Processo ajustado, bolso recheado,<br>
                     O Cangaço chegou, tá tudo dominado!<br>
                     No Rende+ a gente faz por merecer,<br>
                     Cangaço Corporativo veio pra vencer!"
                 </p>
-                <i class="fas fa-quote-right block text-right text-ouro opacity-50 text-3xl mt-4"></i>
+                <i class="fas fa-quote-right block text-right text-ouro opacity-50 text-2xl md:text-3xl mt-4"></i>
             </div>
         </section>
 
-        <section id="projetos" class="mb-24 scroll-mt-32">
-            <h3 class="text-3xl font-cangaco text-center mb-12 uppercase flex items-center justify-center gap-3 text-couro dark:text-white">
+        <section id="projetos" class="mb-16 md:mb-24 scroll-mt-32">
+            <h3 class="text-2xl md:text-3xl font-cangaco text-center mb-8 md:mb-12 uppercase flex items-center justify-center gap-3 text-couro dark:text-white">
                 <i class="fas fa-scroll text-laranja dark:text-ouro"></i> Propostas
             </h3>
 
-            <div class="glass p-8 mb-8 border-t-4 border-red-500 hover:-translate-y-2 transition-transform duration-300">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-14 h-14 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center text-2xl"><i class="fas fa-tools"></i></div>
-                    <h4 class="text-2xl font-bold font-cangaco">1. SOS Infraestrutura</h4>
+            <div class="glass p-5 md:p-8 mb-8 border-t-4 border-red-500 hover:-translate-y-2 transition-transform duration-300">
+                <div class="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+                    <div class="w-12 h-12 md:w-14 md:h-14 shrink-0 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center text-xl md:text-2xl"><i class="fas fa-tools"></i></div>
+                    <h4 class="text-xl md:text-2xl font-bold font-cangaco leading-tight">1. SOS Infraestrutura</h4>
                 </div>
-                <p class="mb-6 text-lg opacity-90"><strong>Objetivo:</strong> Padronizar a identificação e execução de reparos, garantindo agilidade e priorização clara.</p>
-                <div class="bg-black/5 dark:bg-white/5 p-6 rounded-lg mb-4">
+                <p class="mb-6 text-base md:text-lg opacity-90"><strong>Objetivo:</strong> Padronizar a identificação e execução de reparos, garantindo agilidade e priorização clara.</p>
+                <div class="bg-black/5 dark:bg-white/5 p-4 md:p-6 rounded-lg mb-4">
                     <h5 class="font-bold mb-4 uppercase text-xs tracking-wider opacity-70">Como funciona:</h5>
-                    <ul class="space-y-4">
-                        <li class="flex gap-3"><i class="fas fa-bullhorn mt-1 text-red-500"></i><span><strong>Fluxo de Reporte:</strong> O colaborador avisa o Supervisor, que encaminha a demanda à Recepção.</span></li>
-                        <li class="flex gap-3"><i class="fas fa-clock mt-1 text-red-500"></i><span><strong>Triagem e Prazos:</strong> Urgência definida tecnicamente: <span class="font-bold text-red-500">Alta (24h)</span>, <span class="font-bold text-orange-500">Média (72h)</span>, <span class="font-bold text-green-500">Baixa (120h)</span>.</span></li>
-                        <li class="flex gap-3"><i class="fas fa-check-circle mt-1 text-red-500"></i><span><strong>Feedback:</strong> Recepção comunica o desfecho ao solicitante.</span></li>
+                    <ul class="space-y-4 text-sm md:text-base">
+                        <li class="flex gap-3"><i class="fas fa-bullhorn mt-1 text-red-500 shrink-0"></i><span><strong>Fluxo de Reporte:</strong> O colaborador avisa o Supervisor, que encaminha a demanda à Recepção.</span></li>
+                        <li class="flex gap-3"><i class="fas fa-clock mt-1 text-red-500 shrink-0"></i><span><strong>Triagem:</strong> <span class="font-bold text-red-500">Alta (24h)</span>, <span class="font-bold text-orange-500">Média (72h)</span>, <span class="font-bold text-green-500">Baixa (120h)</span>.</span></li>
+                        <li class="flex gap-3"><i class="fas fa-check-circle mt-1 text-red-500 shrink-0"></i><span><strong>Feedback:</strong> Recepção comunica o desfecho.</span></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="glass p-8 mb-8 border-t-4 border-ouro hover:-translate-y-2 transition-transform duration-300">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-14 h-14 bg-yellow-500/20 text-yellow-500 rounded-full flex items-center justify-center text-2xl"><i class="fas fa-handshake"></i></div>
-                    <h4 class="text-2xl font-bold font-cangaco">2. Cadastro de Fornecedores</h4>
+            <div class="glass p-5 md:p-8 mb-8 border-t-4 border-ouro hover:-translate-y-2 transition-transform duration-300">
+                <div class="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+                    <div class="w-12 h-12 md:w-14 md:h-14 shrink-0 bg-yellow-500/20 text-yellow-500 rounded-full flex items-center justify-center text-xl md:text-2xl"><i class="fas fa-handshake"></i></div>
+                    <h4 class="text-xl md:text-2xl font-bold font-cangaco leading-tight">2. Cadastro de Fornecedores</h4>
                 </div>
-                <p class="mb-6 text-lg opacity-90"><strong>Objetivo:</strong> Organizar, padronizar e facilitar a gestão de parceiros comerciais.</p>
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div class="bg-black/5 dark:bg-white/5 p-5 rounded-lg border-l-4 border-yellow-500">
-                        <span class="text-3xl font-bold opacity-30 block mb-2">01</span><h5 class="font-bold mb-1">Identificação</h5><p class="text-sm opacity-80">Pesquisas e cotações.</p>
+                <p class="mb-6 text-base md:text-lg opacity-90"><strong>Objetivo:</strong> Organizar, padronizar e facilitar a gestão de parceiros comerciais.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-black/5 dark:bg-white/5 p-4 md:p-5 rounded-lg border-l-4 border-yellow-500 flex md:block items-center gap-4">
+                        <span class="text-3xl font-bold opacity-30 block md:mb-2">01</span>
+                        <div><h5 class="font-bold mb-1">Identificação</h5><p class="text-sm opacity-80">Pesquisas e cotações.</p></div>
                     </div>
-                    <div class="bg-black/5 dark:bg-white/5 p-5 rounded-lg border-l-4 border-yellow-500">
-                        <span class="text-3xl font-bold opacity-30 block mb-2">02</span><h5 class="font-bold mb-1">Coleta</h5><p class="text-sm opacity-80">Levantamento de dados.</p>
+                    <div class="bg-black/5 dark:bg-white/5 p-4 md:p-5 rounded-lg border-l-4 border-yellow-500 flex md:block items-center gap-4">
+                        <span class="text-3xl font-bold opacity-30 block md:mb-2">02</span>
+                        <div><h5 class="font-bold mb-1">Coleta</h5><p class="text-sm opacity-80">Levantamento de dados.</p></div>
                     </div>
-                    <div class="bg-black/5 dark:bg-white/5 p-5 rounded-lg border-l-4 border-yellow-500">
-                        <span class="text-3xl font-bold opacity-30 block mb-2">03</span><h5 class="font-bold mb-1">Cadastro</h5><p class="text-sm opacity-80">Registro no sistema.</p>
+                    <div class="bg-black/5 dark:bg-white/5 p-4 md:p-5 rounded-lg border-l-4 border-yellow-500 flex md:block items-center gap-4">
+                        <span class="text-3xl font-bold opacity-30 block md:mb-2">03</span>
+                        <div><h5 class="font-bold mb-1">Cadastro</h5><p class="text-sm opacity-80">Registro no sistema.</p></div>
                     </div>
                 </div>
             </div>
 
-            <div class="glass p-8 border-t-4 border-green-500 hover:-translate-y-2 transition-transform duration-300">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-14 h-14 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center text-2xl"><i class="fas fa-heartbeat"></i></div>
-                    <h4 class="text-2xl font-bold font-cangaco">3. Pausas Ergonômicas</h4>
+            <div class="glass p-5 md:p-8 border-t-4 border-green-500 hover:-translate-y-2 transition-transform duration-300">
+                <div class="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+                    <div class="w-12 h-12 md:w-14 md:h-14 shrink-0 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center text-xl md:text-2xl"><i class="fas fa-heartbeat"></i></div>
+                    <h4 class="text-xl md:text-2xl font-bold font-cangaco leading-tight">3. Pausas Ergonômicas</h4>
                 </div>
-                <p class="mb-6 text-lg opacity-90"><strong>Objetivo:</strong> Promover saúde e prevenir dores musculares.</p>
+                <p class="mb-6 text-base md:text-lg opacity-90"><strong>Objetivo:</strong> Promover saúde e prevenir dores musculares.</p>
                 <div class="flex flex-col md:flex-row gap-6">
-                    <div class="flex-1 bg-black/5 dark:bg-white/5 p-6 rounded-lg">
-                        <ul class="space-y-2 text-sm">
-                            <li>• Sirene toca nos horários programados.</li>
+                    <div class="flex-1 bg-black/5 dark:bg-white/5 p-4 md:p-6 rounded-lg">
+                        <ul class="space-y-2 text-sm md:text-base">
+                            <li>• sinal sonoro e visual nos horários programados.</li>
                             <li>• Todos interrompem a atividade.</li>
                             <li>• Realização de alongamentos.</li>
                             <li>• <strong>Duração:</strong> 5 a 10 minutos.</li>
                         </ul>
                     </div>
-                    <div class="flex flex-col justify-center gap-4 min-w-[200px]">
-                        <div class="flex items-center gap-4 bg-green-500/10 p-4 rounded-lg border border-green-500/30">
+                    <div class="flex flex-row md:flex-col justify-center gap-4 min-w-[200px]">
+                        <div class="flex-1 flex items-center gap-3 bg-green-500/10 p-3 md:p-4 rounded-lg border border-green-500/30">
                             <i class="fas fa-sun text-ouro text-xl"></i>
-                            <div><strong class="block text-xl">10h</strong><span class="text-xs font-bold uppercase text-green-500">Manhã</span></div>
+                            <div><strong class="block text-lg md:text-xl">10h</strong><span class="text-[10px] md:text-xs font-bold uppercase text-green-500">Manhã</span></div>
                         </div>
-                        <div class="flex items-center gap-4 bg-green-500/10 p-4 rounded-lg border border-green-500/30">
+                        <div class="flex-1 flex items-center gap-3 bg-green-500/10 p-3 md:p-4 rounded-lg border border-green-500/30">
                             <i class="fas fa-cloud-sun text-laranja text-xl"></i>
-                            <div><strong class="block text-xl">15h</strong><span class="text-xs font-bold uppercase text-green-500">Tarde</span></div>
+                            <div><strong class="block text-lg md:text-xl">15h</strong><span class="text-[10px] md:text-xs font-bold uppercase text-green-500">Tarde</span></div>
                         </div>
                     </div>
                 </div>
@@ -215,64 +232,64 @@
         </section>
 
         <section id="bando" class="scroll-mt-32">
-            <h3 class="text-3xl font-cangaco text-center mb-12 uppercase flex items-center justify-center gap-3 text-couro dark:text-white">
+            <h3 class="text-2xl md:text-3xl font-cangaco text-center mb-8 md:mb-12 uppercase flex items-center justify-center gap-3 text-couro dark:text-white">
                 <i class="fas fa-users text-laranja dark:text-ouro"></i> O Bando
             </h3>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 
-                <div class="glass flex flex-col items-center p-6 border-2 border-ouro dark:bg-ouro/5 hover:border-laranja">
+                <div class="glass flex flex-col items-center p-4 md:p-6 border-2 border-ouro dark:bg-ouro/5 hover:border-laranja col-span-2 md:col-span-1">
                     <img src="hercules.jpg" class="member-img" onerror="this.src='hercules.jpeg'; this.onerror=function(){this.src='hercules.png'}">
-                    <h4 class="text-xl font-bold font-cangaco mt-4">Hércules Santos</h4>
-                    <span class="bg-couro dark:bg-ouro dark:text-black text-white text-xs font-bold px-3 py-1 rounded-full uppercase mt-2">Capitão (Líder)</span>
+                    <h4 class="text-lg md:text-xl font-bold font-cangaco mt-3 md:mt-4">Hércules Santos</h4>
+                    <span class="bg-couro dark:bg-ouro dark:text-black text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase mt-2">Capitão (Líder)</span>
                 </div>
 
-                <div class="glass flex flex-col items-center p-6 group">
+                <div class="glass flex flex-col items-center p-4 md:p-6 group">
                     <img src="aline.jpg" class="member-img" onerror="this.src='aline.jpeg'; this.onerror=function(){this.src='aline.png'}">
-                    <h4 class="font-bold text-lg mt-4">Aline Casé</h4>
-                    <p class="text-xs uppercase opacity-70 font-bold">Cangaceira</p>
+                    <h4 class="font-bold text-base md:text-lg mt-3 md:mt-4 text-center">Aline Casé</h4>
+                    <p class="text-[10px] md:text-xs uppercase opacity-70 font-bold">Cangaceira</p>
                 </div>
 
-                <div class="glass flex flex-col items-center p-6 group">
+                <div class="glass flex flex-col items-center p-4 md:p-6 group">
                     <img src="andreza.jpg" class="member-img" onerror="this.src='andreza.jpeg'; this.onerror=function(){this.src='andreza.png'}">
-                    <h4 class="font-bold text-lg mt-4">Andreza Reis</h4>
-                    <p class="text-xs uppercase opacity-70 font-bold">Cangaceira</p>
+                    <h4 class="font-bold text-base md:text-lg mt-3 md:mt-4 text-center">Andreza Reis</h4>
+                    <p class="text-[10px] md:text-xs uppercase opacity-70 font-bold">Cangaceira</p>
                 </div>
 
-                <div class="glass flex flex-col items-center p-6 group">
+                <div class="glass flex flex-col items-center p-4 md:p-6 group">
                     <img src="anna.jpg" class="member-img" onerror="this.src='anna.jpeg'; this.onerror=function(){this.src='anna.png'}">
-                    <h4 class="font-bold text-lg mt-4">Anna Beatriz</h4>
-                    <p class="text-xs uppercase opacity-70 font-bold">Cangaceira</p>
+                    <h4 class="font-bold text-base md:text-lg mt-3 md:mt-4 text-center">Anna Beatriz</h4>
+                    <p class="text-[10px] md:text-xs uppercase opacity-70 font-bold">Cangaceira</p>
                 </div>
 
-                <div class="glass flex flex-col items-center p-6 group">
+                <div class="glass flex flex-col items-center p-4 md:p-6 group">
                     <img src="gislande.jpg" class="member-img" onerror="this.src='gislande.jpeg'; this.onerror=function(){this.src='gislande.png'}">
-                    <h4 class="font-bold text-lg mt-4">Gislande Muniz</h4>
-                    <p class="text-xs uppercase opacity-70 font-bold">Cangaceira</p>
+                    <h4 class="font-bold text-base md:text-lg mt-3 md:mt-4 text-center">Gislande Muniz</h4>
+                    <p class="text-[10px] md:text-xs uppercase opacity-70 font-bold">Cangaceira</p>
                 </div>
 
-                <div class="glass flex flex-col items-center p-6 group">
+                <div class="glass flex flex-col items-center p-4 md:p-6 group">
                     <img src="kelvin.jpg" class="member-img" onerror="this.src='kelvin.jpeg'; this.onerror=function(){this.src='kelvin.png'}">
-                    <h4 class="font-bold text-lg mt-4">Kelvin Mira</h4>
-                    <p class="text-xs uppercase opacity-70 font-bold">Cangaceiro</p>
+                    <h4 class="font-bold text-base md:text-lg mt-3 md:mt-4 text-center">Kelvin Mira</h4>
+                    <p class="text-[10px] md:text-xs uppercase opacity-70 font-bold">Cangaceiro</p>
                 </div>
 
-                <div class="glass flex flex-col items-center p-6 group">
+                <div class="glass flex flex-col items-center p-4 md:p-6 group">
                     <img src="thais.jpg" class="member-img" onerror="this.src='thais.jpeg'; this.onerror=function(){this.src='thais.png'}">
-                    <h4 class="font-bold text-lg mt-4">Thais Matos</h4>
-                    <p class="text-xs uppercase opacity-70 font-bold">Cangaceira</p>
+                    <h4 class="font-bold text-base md:text-lg mt-3 md:mt-4 text-center">Thais Matos</h4>
+                    <p class="text-[10px] md:text-xs uppercase opacity-70 font-bold">Cangaceira</p>
                 </div>
 
-                <div class="glass flex flex-col items-center p-6 group">
+                <div class="glass flex flex-col items-center p-4 md:p-6 group">
                     <img src="vinicius.jpg" class="member-img" onerror="this.src='vinicius.jpeg'; this.onerror=function(){this.src='vinicius.png'}">
-                    <h4 class="font-bold text-lg mt-4">Vinicíus O.</h4>
-                    <p class="text-xs uppercase opacity-70 font-bold">Cangaceiro</p>
+                    <h4 class="font-bold text-base md:text-lg mt-3 md:mt-4 text-center">Vinicíus O.</h4>
+                    <p class="text-[10px] md:text-xs uppercase opacity-70 font-bold">Cangaceiro</p>
                 </div>
 
-                <div class="glass flex flex-col items-center p-6 group">
+                <div class="glass flex flex-col items-center p-4 md:p-6 group col-span-2 md:col-span-1">
                     <img src="yanne.jpg" class="member-img" onerror="this.src='yanne.jpeg'; this.onerror=function(){this.src='yanne.png'}">
-                    <h4 class="font-bold text-lg mt-4">Yanne Silva</h4>
-                    <p class="text-xs uppercase opacity-70 font-bold">Cangaceira</p>
+                    <h4 class="font-bold text-base md:text-lg mt-3 md:mt-4 text-center">Yanne Silva</h4>
+                    <p class="text-[10px] md:text-xs uppercase opacity-70 font-bold">Cangaceira</p>
                 </div>
 
             </div>
@@ -280,7 +297,7 @@
 
     </main>
 
-    <footer class="text-center py-8 text-xs font-bold opacity-60 relative z-10 border-t border-gray-500/20 mt-10 text-couro dark:text-gray-400">
+    <footer class="text-center py-8 text-[10px] md:text-xs font-bold opacity-60 relative z-10 border-t border-gray-500/20 mt-10 text-couro dark:text-gray-400">
         &copy; 2026 Cangaço Corporativo | Mandacaru Tech
     </footer>
 
